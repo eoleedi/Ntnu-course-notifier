@@ -33,7 +33,8 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     # 決定要回傳什麼 Component 到 Channel
-    connect(os.environ['MONGODB_DB'], host=os.environ['MONGODB_HOST'], username=os.environ['MONGODB_USERNAME'], password=os.environ['MONGODB_PASSWORD'])
+    DB_URI = "mongodb+srv://" + os.environ['MONGODB_USERNAME'] + ":" + os.environ['MONGODB_PASSWORD'] + "@" + os.environ['MONGODB_DB'] + ".mongodb.net/test?retryWrites=true&w=majority"
+    connect(DB_URI)
     try:
         user = Users.objects.get(user_id=event.message.id)
         user.tracked_courses.append(event.message.text)
