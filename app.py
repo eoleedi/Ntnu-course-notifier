@@ -56,10 +56,11 @@ def handle_message(event):
         "limit": 99999,
         "page": 1,
     }
-    course_info = course_query(courseQuery)
+
+    parsed = json.loads(course_query(courseQuery).text)
     line_bot_api.reply_message(
         event.reply_token,
-        TextSendMessage(text=course_info))
+        TextSendMessage(text=json.dumps(parsed, indent=4, ensure_ascii=False)))
     
     '''
     # 決定要回傳什麼 Component 到 Channel
