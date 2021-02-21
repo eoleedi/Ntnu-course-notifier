@@ -9,6 +9,7 @@ from linebot.models import (
 )
 from mongoengine import *
 from schema import *
+from checkcourse import *
 app = Flask(__name__)
 
 # LINE 聊天機器人的基本資料
@@ -32,6 +33,35 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
+    courseQuery = {
+        "acadmYear": 109,
+        "acadmTerm": 2,
+        "chn":'',
+        "engTeach": "N",
+        "moocs": "N",
+        "remoteCourse": "N",
+        "digital": "N",
+        "adsl": "N",
+        "deptCode": "GU",
+        "zuDept":'',
+        "classCode":'',
+        "kind":'',
+        "generalCore":'',
+        "teacher":'',
+        "serial_number":'',
+        "course_code":event.message.text,
+        "language": "chinese",
+        "action": "showGrid",
+        "start": 0,
+        "limit": 99999,
+        "page": 1,
+    }
+    course_info = course_query(courseQuery)
+    line_bot_api.reply_message(
+        event.reply_token,
+        TextSendMessage(text=course_info))
+    
+    '''
     # 決定要回傳什麼 Component 到 Channel
     DB_URI = "mongodb+srv://" + os.environ['MONGODB_USERNAME'] + ":" + os.environ['MONGODB_PASSWORD'] + "@" + os.environ['MONGODB_HOST'] + "/" + os.environ['MONGODB_DB'] + "?retryWrites=true&w=majority"
     connect(host=DB_URI)
@@ -47,6 +77,6 @@ def handle_message(event):
     line_bot_api.reply_message(
         event.reply_token,
         TextSendMessage(text=event.message.text + "successful added"))
-
+    '''
 if __name__ == "__main__":
     app.run()
