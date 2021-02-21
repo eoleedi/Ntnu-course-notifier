@@ -40,8 +40,8 @@ def handle_message(event):
         user.tracked_courses.append(event.message.text)
     except DoesNotExist: 
         user = Users(
-            user_id=event.source.userId,
-            username=line_bot_api.get_profile(event.source.userId).display_name,
+            user_id=event.source.user_id,
+            username=line_bot_api.get_profile(event.source.user_id).display_name,
             tracked_course=[event.message.text]
         )
     line_bot_api.reply_message(
