@@ -1,3 +1,4 @@
 flask
 line-bot-sdk
 mongoengine
+gunicorn==19.9.0
